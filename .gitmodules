@@ -1,0 +1,3 @@
+[submodule "fakeLisp"]
+	path = fakeLisp
+	url = https://gitee.com/ThePeiLin/fakeLisp.git
