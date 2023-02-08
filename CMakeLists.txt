@@ -29,4 +29,4 @@ add_library(${CONT_TARGET_NAME}
 	${CONT_SOURCE})
 set_target_properties(${CONT_TARGET_NAME} PROPERTIES PREFIX "")
 
-target_link_libraries(${CONT_TARGET_NAME} ${LIBFKL_TARGET_NAME})
+target_link_libraries(${CONT_TARGET_NAME} fkl)
