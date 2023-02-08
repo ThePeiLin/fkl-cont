@@ -5,9 +5,7 @@
 #include<fakeLisp/bytecode.h>
 #include"cont.h"
 
-#define ARGL FklVM* exe,FklVMvalue* rel,FklVMvalue* pd
-
-void continuation_p(ARGL)
+void continuation_p(FKL_DL_PROC_ARGL)
 {
 	FKL_NI_BEGIN(exe);
 	FklVMvalue* val=fklNiGetArg(&ap,stack);
@@ -22,7 +20,7 @@ void continuation_p(ARGL)
 	fklNiEnd(&ap,stack);
 }
 
-void call_cc(ARGL)
+void call_cc(FKL_DL_PROC_ARGL)
 {
 	FKL_NI_BEGIN(exe);
 	FklVMframe* frame=exe->frames;
@@ -67,4 +65,41 @@ void _fklInit(FklVMdll* rel,FklVM* exe)
 	fklSetRef(&rel->pd,ud,exe->gc);
 }
 
-#undef ARGL
+struct SymFunc
+{
+	const char* sym;
+	FklVMdllFunc f;
+};
+
+#define EXPORT_NUM (2)
+static const struct SymFunc
+exports[EXPORT_NUM]=
+{
+	{"continuation?",continuation_p,},
+	{"call/cc",call_cc,},
+};
+
+void _fklExportSymbolInit(size_t* pnum,FklSid_t** psyms,FklSymbolTable* table)
+{
+	*pnum=EXPORT_NUM;
+	FklSid_t* symbols=(FklSid_t*)malloc(sizeof(FklSid_t)*EXPORT_NUM);
+	FKL_ASSERT(symbols);
+	for(size_t i=0;i<EXPORT_NUM;i++)
+		symbols[i]=fklAddSymbolCstr(exports[i].sym,table)->id;
+	*psyms=symbols;
+}
+
+void _fklImportInit(FklVM* exe,FklVMvalue* dll,FklVMvalue* env)
+{
+	FklSymbolTable* table=exe->symbolTable;
+	FklVMenv* e=env->u.env;
+	for(size_t i=0;i<EXPORT_NUM;i++)
+	{
+		FklSid_t id=fklAddSymbolCstr(exports[i].sym,table)->id;
+		FklVMdllFunc func=exports[i].f;
+		FklVMdlproc* proc=fklCreateVMdlproc(func,dll,dll->u.dll->pd);
+		proc->sid=id;
+		FklVMvalue* dlproc=fklCreateVMvalueToStack(FKL_TYPE_DLPROC,proc,exe);
+		fklFindOrAddVarWithValue(id,dlproc,e);
+	}
+}
