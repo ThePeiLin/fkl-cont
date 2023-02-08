@@ -71,13 +71,14 @@ struct SymFunc
 	FklVMdllFunc f;
 };
 
-#define EXPORT_NUM (2)
 static const struct SymFunc
-exports[EXPORT_NUM]=
+exports[]=
 {
-	{"continuation?",continuation_p,},
-	{"call/cc",call_cc,},
+	{"continuation?", continuation_p, },
+	{"call/cc",       call_cc,        },
 };
+
+static const size_t EXPORT_NUM=sizeof(exports)/sizeof(struct SymFunc);
 
 void _fklExportSymbolInit(size_t* pnum,FklSid_t** psyms,FklSymbolTable* table)
 {
