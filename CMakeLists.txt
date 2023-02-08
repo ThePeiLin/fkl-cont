@@ -34,6 +34,6 @@ set_target_properties(${CONT_TARGET_NAME} PROPERTIES PREFIX "")
 target_link_libraries(${CONT_TARGET_NAME} fkl)
 
 #copy cont.fkl
-add_custom_target(COPY_FKLC_FKL ALL
+add_custom_target(COPY_CONT_FKL ALL
 	COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/cont.fkl ${CMAKE_BINARY_DIR})
 
