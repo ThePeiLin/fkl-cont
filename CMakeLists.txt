@@ -24,9 +24,16 @@ add_subdirectory(fakeLisp)
 include_directories("${PROJECT_SOURCE_DIR}/fakeLisp/include")
 
 #cont.so
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
 add_library(${CONT_TARGET_NAME}
 	MODULE
 	${CONT_SOURCE})
 set_target_properties(${CONT_TARGET_NAME} PROPERTIES PREFIX "")
 
 target_link_libraries(${CONT_TARGET_NAME} fkl)
+
+#copy cont.fkl
+add_custom_target(COPY_FKLC_FKL ALL
+	COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/cont.fkl ${CMAKE_BINARY_DIR})
+
