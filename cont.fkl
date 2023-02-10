@@ -1,9 +1,11 @@
 (module
   cont
-  (continuation?
-    call/cc)
+  [
+   continuation?
+   call/cc
+   (defmacro
+     (letcc t,b)
+     `(call/cc (lambda (~t) ~@b)))
+   ]
   (import (bin cont))
-  (defmacro
-    (letcc t,b)
-    `(call/cc (lambda (~t) ~@b)))
   )
