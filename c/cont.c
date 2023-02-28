@@ -65,7 +65,7 @@ void destroyContinuation(Continuation* cont)
 	{
 		FklVMframe* cur=curr;
 		curr=curr->prev;
-		fklDestroyVMframe(cur);
+		fklDestroyVMframe(cur,NULL);
 	}
 	fklUninitUintStack(&stack->tps);
 	fklUninitUintStack(&stack->bps);

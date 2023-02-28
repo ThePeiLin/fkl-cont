@@ -37,7 +37,7 @@ void call_cc(FKL_DL_PROC_ARGL)
 	FklVMvalue* vcc=fklCreateVMvalueToStack(FKL_TYPE_USERDATA,ud,exe);
 	fklNiSetBp(ap,stack);
 	fklNiReturn(vcc,&ap,stack);
-	fklTailCallobj(proc,frame,exe);
+	fklTailCallObj(proc,frame,exe);
 	fklNiEnd(&ap,stack);
 }
 
